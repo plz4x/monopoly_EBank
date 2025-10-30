@@ -11,7 +11,7 @@ money = {
 while True:
 	cmd = input(">>> ")
 	cmd_split = cmd.split(" ") # Splits the command into multiple list items
-	if cmd.startswith("reset"):
+	if cmd_split[0] == "reset":
 		# reset money (to 1500), properties
 		money = {
 		"p1": 1500,
@@ -22,7 +22,7 @@ while True:
 		print("All player money has been reset to M1500.")
 		continue
 	
-	elif cmd.startswith("manual"):
+	elif cmd_split[0] == "manual":
 		manual = [
 			"""Welcome to the Monopoly E-Bank Manual.
 This manual will teach you all of this CLI's commands.
@@ -65,7 +65,7 @@ The following things still need to be managed physically on the board:
 - chance cards and community chest cards (though money effects can be managed in the CLI);
 - jail and get out of jail free cards;
 - mortgages;
-- trading of items between players."""
+- trading of items between players (though payments can be managed in the CLI)"""
 		]
 		for paragraph in manual:
 			print(paragraph)
@@ -77,14 +77,15 @@ The following things still need to be managed physically on the board:
 If at any time you need a quick review of the commands, type "help".""")
 		continue
 		
-	elif cmd.startswith("changelog"):
+	elif cmd_split[0] == "changelog":
 		print("""PROGRAM CHANGELOG
 v1.0 (26/10/2025): Initial release, can only handle money.
-v1.1 (29/10/2025): Added player renaming and fixed a minor spelling error. Also did a bugfix. <-- CURRENT VERSION
+v1.1 (29/10/2025): Added player renaming and fixed a minor spelling error. Also did a bugfix.
+v1.2 (31/10/2025): Did a bugfix. <-- CURRENT VERSION
 v2.0 (FUTURE): Add property management.""")
 		continue
 		
-	elif cmd.startswith("help"):
+	elif cmd_split[0] =="help":
 		print("""QUICK COMMAND HELP
 reset: Resets all money and properties.
 add p1 100: Adds M100 to p1.
@@ -95,39 +96,39 @@ trans p1 p2 10: Transfers M10 from p1 to p2.
 vm p1: Shows p1's money.
 vm all: Shows every player's money.
 ren p1 someone: Renames p1 to someone.
-exit: Quits the program.""") # add ren tutorial and rename all p1 to p1
+exit: Quits the program.""")
 		continue
 		
-	elif cmd.startswith("exit"):
+	elif cmd_split[0] =="exit":
 		quit()
 	
 	try:
-		if cmd.startswith("add"):
+		if cmd_split[0] =="add":
 			money[cmd_split[1]] += int(cmd_split[2]) # Adds money
 			print(f"""M{cmd_split[2]} added to {cmd_split[1]}.
 {cmd_split[1]}'s current total money: M{money[cmd_split[1]]}""") # This print line displays command data; how much money was added, etc.
 		
-		elif cmd.startswith("subt"):
+		elif cmd_split[0] =="subt":
 			money[cmd_split[1]] -= int(cmd_split[2])
 			print(f"""M{cmd_split[2]} subtracted from {cmd_split[1]}.
 {cmd_split[1]}'s current total money: M{money[cmd_split[1]]}""")
 			
-		elif cmd.startswith("trans"):
+		elif cmd_split[0] =="trans":
 			money[cmd_split[1]] -= int(cmd_split[3])
 			money[cmd_split[2]] += int(cmd_split[3])
 			print(f"""M{cmd_split[3]} transferred from {cmd_split[1]} to {cmd_split[2]}.
 {cmd_split[1]}'s current total money: M{money[cmd_split[1]]}
 {cmd_split[2]}'s current total money: M{money[cmd_split[2]]}""")
 		
-		elif cmd.startswith("go"):
+		elif cmd_split[0] =="go":
 			money[cmd_split[1]] += 200
-			print(f"M200 added to {cmd_split[1]}")
+			print(f"M200 added to {cmd_split[1]}") # add current money here
 		
-		elif cmd.startswith("set"):
+		elif cmd_split[0] =="set":
 			money[cmd_split[1]] = int(cmd_split[2])
 			print(f"""{cmd_split[1]}'s money set to M{cmd_split[2]}.""")
 	
-		elif cmd.startswith("vm"):
+		elif cmd_split[0] =="vm":
 			if cmd_split[1] == "all":
 				print(f"""ALL PLAYER CURRENT TOTAL MONEY:
 
@@ -135,20 +136,20 @@ exit: Quits the program.""") # add ren tutorial and rename all p1 to p1
 			else:
 				print(f"""{cmd_split[1]}'s current total money: M{money[cmd_split[1]]}""")
 
-		elif cmd.startswith("ren"):
+		elif cmd_split[0] =="ren":
 			money[cmd_split[2]] = money.pop(cmd_split[1])
 
 		else:
 			print(f"ERROR: Unknown command \"{cmd_split[0]}\"")
 			
 	except KeyError:
-		if cmd.startswith("trans"):
+		if cmd_split[0] =="trans":
 			print(f"ERROR: Invalid transfer origin/destination \"{cmd_split[1]} {cmd_split[2]}\"")
 		else:
 			print(f"ERROR: Nonexistent player \"{cmd_split[1]}\"")
 
 	except ValueError:
-		if cmd.startswith("trans"):
+		if cmd_split[0] =="trans":
 			print(f"ERROR: Invalid money value \"{cmd_split[3]}\"")
 		else:
 			print(f"ERROR: Invalid money value \"{cmd_split[2]}\"")
