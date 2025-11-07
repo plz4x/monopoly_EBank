@@ -40,9 +40,13 @@ set: Sets the stated player's money to the stated amount.
 EXAMPLE: set p1 300 -- Sets p1's amount to M300.""",
 			"""trans: Transfers money from one player to another.
 EXAMPLE: trans p2 p4 10 -- Transfers M10 from p2 to p4.
-vm: Short for "View Money", lets you see the amount of money one player has.
+vm: Short for View Money; lets you see the stated player's the amount of money.
 EXAMPLE: vm p1 -- Shows the amount of money p1 has.
-EXAMPLE: vm all -- Shows the amount of money everyone has.""",
+EXAMPLE: vm all -- Shows the amount of money everyone has.
+itax: Short for Income Tax; subtracts M200 from the stated player.
+EXAMPLE: itax p1 -- Subtracts M200 from p1.
+ltax: Short for Luxury Tax; subtracts M100 from the stated player.
+EXAMPLE: ltax p1 -- Subtracts M100 from p1.""",
 			"""2. OTHER MISCELLANEOUS COMMANDS
 ren: Renames a player.
 EXAMPLE: ren p1 someone -- Renames p1 to someone.
@@ -81,11 +85,12 @@ If at any time you need a quick review of the commands, type "help".""")
 		print("""PROGRAM CHANGELOG
 v1.0 (26/10/2025): Initial release, can only handle money.
 v1.1 (29/10/2025): Added player renaming and fixed a minor spelling error. Also did a bugfix.
-v1.2 (31/10/2025): Did a bugfix. <-- CURRENT VERSION
+v1.2 (31/10/2025): Did a bugfix.
+v1.3 (07/11/2025): Added ltax and itax commands and did a bugfix. <-- CURRENT VERSION
 v2.0 (FUTURE): Add property management.""")
 		continue
 		
-	elif cmd_split[0] =="help":
+	elif cmd_split[0] == "help":
 		print("""QUICK COMMAND HELP
 reset: Resets all money and properties.
 add p1 100: Adds M100 to p1.
@@ -99,36 +104,37 @@ ren p1 someone: Renames p1 to someone.
 exit: Quits the program.""")
 		continue
 		
-	elif cmd_split[0] =="exit":
+	elif cmd_split[0] == "exit":
 		quit()
 	
 	try:
-		if cmd_split[0] =="add":
+		if cmd_split[0] == "add":
 			money[cmd_split[1]] += int(cmd_split[2]) # Adds money
 			print(f"""M{cmd_split[2]} added to {cmd_split[1]}.
 {cmd_split[1]}'s current total money: M{money[cmd_split[1]]}""") # This print line displays command data; how much money was added, etc.
 		
-		elif cmd_split[0] =="subt":
+		elif cmd_split[0] == "subt":
 			money[cmd_split[1]] -= int(cmd_split[2])
 			print(f"""M{cmd_split[2]} subtracted from {cmd_split[1]}.
 {cmd_split[1]}'s current total money: M{money[cmd_split[1]]}""")
 			
-		elif cmd_split[0] =="trans":
+		elif cmd_split[0] == "trans":
 			money[cmd_split[1]] -= int(cmd_split[3])
 			money[cmd_split[2]] += int(cmd_split[3])
 			print(f"""M{cmd_split[3]} transferred from {cmd_split[1]} to {cmd_split[2]}.
 {cmd_split[1]}'s current total money: M{money[cmd_split[1]]}
 {cmd_split[2]}'s current total money: M{money[cmd_split[2]]}""")
 		
-		elif cmd_split[0] =="go":
+		elif cmd_split[0] == "go":
 			money[cmd_split[1]] += 200
-			print(f"M200 added to {cmd_split[1]}") # add current money here
+			print(f"""M200 added to {cmd_split[1]}.
+{cmd_split[1]}'s current total money: {money[cmd_split[1]]}""")
 		
-		elif cmd_split[0] =="set":
+		elif cmd_split[0] == "set":
 			money[cmd_split[1]] = int(cmd_split[2])
 			print(f"""{cmd_split[1]}'s money set to M{cmd_split[2]}.""")
 	
-		elif cmd_split[0] =="vm":
+		elif cmd_split[0] == "vm":
 			if cmd_split[1] == "all":
 				print(f"""ALL PLAYER CURRENT TOTAL MONEY:
 
@@ -136,8 +142,20 @@ exit: Quits the program.""")
 			else:
 				print(f"""{cmd_split[1]}'s current total money: M{money[cmd_split[1]]}""")
 
-		elif cmd_split[0] =="ren":
+		elif cmd_split[0] == "ren":
 			money[cmd_split[2]] = money.pop(cmd_split[1])
+			print(f"""{cmd_split[1]} renamed to {cmd_split[2]}.
+{cmd_split[2]}'s current total money: {money[cmd_split[2]]}""")
+
+		elif cmd_split[0] == "itax":
+			money[cmd_split[1]] -= 200
+			print(f"""M200 subtracted from {cmd_split[1]}.
+{cmd_split[1]}'s current total money: {money[cmd_split[1]]}""")
+			
+		elif cmd_split[0] == "ltax":
+			money[cmd_split[1]] -= 100
+			print(f"""M100 subtracted from {cmd_split[1]}.
+{cmd_split[1]}'s current total money: {money[cmd_split[1]]}""")
 
 		else:
 			print(f"ERROR: Unknown command \"{cmd_split[0]}\"")
