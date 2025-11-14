@@ -1,4 +1,4 @@
-# Monopoly E-Bank
+# Monopoly EBank
 
 It's the Monopoly bank. But cashless.
 Perfect for playing Monopoly under the fan or on a windy day.
